@@ -30,7 +30,7 @@ import PactSwiftMockServer
 final class ProviderVerifierTests: XCTestCase {
 
 	var errorReporter: ErrorCapture!
-	var mockVerifier: ProviderVerifying!
+	var mockVerifier: VerifierInterface!
 	var testSubject: ProviderVerifier!
 
 	override func setUpWithError() throws {
@@ -117,7 +117,7 @@ final class ProviderVerifierTests: XCTestCase {
 
 // MARK: - Mocks
 
-private class MockVerifier: ProviderVerifying {
+private class MockVerifier: VerifierInterface {
 
 	typealias VerifyProviderHandler = () -> Result<Bool, ProviderVerificationError>
 
@@ -129,6 +129,56 @@ private class MockVerifier: ProviderVerifying {
 
 	func verifyProvider(options args: String) -> Result<Bool, ProviderVerificationError> {
 		verifyProviderHandler?() ?? .success(true)
+	}
+
+	// MARK: - Handle based interface
+
+	func verify() -> Result<Bool, PactSwiftMockServer.ProviderVerificationError> {
+		.success(true)
+	}
+
+	func setProviderInfo(name: String, url: URL) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func setFilter(description: String?, state: String?, noState: Bool) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func setProviderState(url: URL, teardown: Bool, body: Bool) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func setVerificationOptions(disableSSL: Bool, timeout: UInt) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func verifyPactsInDirectory(_ directory: String) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func verifyPactFile(_ file: String) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func verifyPactAtURL(url: URL, authentication: PactSwiftMockServer.Either<PactSwiftMockServer.SimpleAuth, PactSwiftMockServer.Token>?) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func verifyPactsAtPactBroker(urlString: String, authentication: PactSwiftMockServer.Either<PactSwiftMockServer.SimpleAuth, PactSwiftMockServer.Token>?) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func verifyPactsAtPactBroker(url: URL, authentication: PactSwiftMockServer.Either<PactSwiftMockServer.SimpleAuth, PactSwiftMockServer.Token>, providerTags: [String], providerBranch: String?, versionSelectors: [PactSwiftMockServer.VersionSelector], consumerTags: [String], enablePending: Bool, includeWIPPactsSince: Date?) throws -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func setCustomHeaders(_ headers: [String : String]) -> PactSwiftMockServer.VerifierInterface {
+		self
+	}
+
+	func setPublishOptions(providerVersion: String, providerBranch: String, buildURL: URL, providerTags: [String]) -> VerifierInterface {
+		self
 	}
 
 }

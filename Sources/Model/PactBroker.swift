@@ -18,43 +18,8 @@
 import Foundation
 
 /// Pact broker configuration used when verifying a provider
+@available(*, deprecated, message: "Use Broker instead")
 public struct PactBroker {
-
-	public enum Either<A, T> {
-		case auth(A)
-		case token(T)
-	}
-
-	/// Simple authentication with Pact Broker
-	public struct SimpleAuth {
-		let username: String
-		let password: String
-
-		/// Initializes authentication configuration store
-		///
-		/// - Parameters:
-		///   - username: The username to use when authenticating with Pact Broker
-		///   - password: The password to use when authenticating with Pact Broker
-		///
-		public init(username: String, password: String) {
-			self.username = username
-			self.password = password
-		}
-	}
-
-	/// API token store for a Pact Broker (Pactflow)
-	public struct APIToken {
-		let token: String
-
-		/// Initializes the Broker API token store
-		///
-		/// - Parameters:
-		///   - token: The authorization token
-		///
-		public init(_ token: String) {
-			self.token = token
-		}
-	}
 
 	/// Verification results handling
 	public struct VerificationResults {

@@ -1,6 +1,6 @@
 //
-//  Created by Marko Justinek on 21/8/21.
-//  Copyright © 2021 Marko Justinek. All rights reserved.
+//  Created by Marko Justinek on 1/11/2022.
+//  Copyright © 2022 Marko Justinek. All rights reserved.
 //
 //  Permission to use, copy, modify, and/or distribute this software for any
 //  purpose with or without fee is hereby granted, provided that the above
@@ -17,39 +17,26 @@
 
 import Foundation
 
+#if os(Linux)
+import PactSwiftMockServerLinux
+#elseif compiler(>=5.5)
+@_implementationOnly import PactSwiftMockServer
+#else
+import PactSwiftMockServer
+#endif
+
 public extension ProviderVerifier {
 
-	/// The provider being verified
-	@available(*, deprecated, message: "Use ProviderInfo")
-	struct Provider {
+	struct ConsumerInfo {
+		/// Consumer Version Selectors defining which versions to verify
+		let versionSelectors: [PactSwiftMockServer.VersionSelector]
 
-		/// The port of provider being verified
-		let port: Int
-
-		/// URL of the provider being verified
-		let url: URL?
-
-		/// The provider being verified
-		public init(url: URL? = nil, port: Int) {
-			self.url = url
-			self.port = port
-		}
-	}
-
-	// MARK: -
-
-	struct ProviderOptions {
-
-		/// The provider's tags to verify (deprecated)
+		/// Consumer tags to verify (deprecated)
 		let tags: [String]
 
-		/// The provider's branch name to verify
-		let branch: String?
-
-		/// The provider info to verify
-		public init(branch: String? = nil, tags: [String] = []) {
+		public init(versionSelectors: [VersionSelector], tags: [String] = []) {
+			self.versionSelectors = versionSelectors.map { $0.bridgedToMockServer }
 			self.tags = tags
-			self.branch = branch
 		}
 	}
 

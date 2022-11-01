@@ -18,61 +18,49 @@
 import Foundation
 
 #if os(Linux)
-
 import PactSwiftMockServerLinux
+#elseif compiler(>=5.5)
+@_implementationOnly import PactSwiftMockServer
+#else
+import PactSwiftMockServer
+#endif
+
+#if os(Linux)
 
 /// Defines the transfer protocol on which `MockService` runs.
 public enum TransferProtocol {
 	case standard
 	case secure
-
-	var bridge: PactSwiftMockServerLinux.TransferProtocol {
-		switch self {
-		case .standard: return .standard
-		case .secure: return .secure
-		}
-	}
-}
-
-#elseif compiler(>=5.5)
-// This is ridiculous! This works when building on macOS 11+.
-
-@_implementationOnly import PactSwiftMockServer
-
-/// Defines the transfer protocol on which `MockService` runs.
-@objc public enum TransferProtocol: Int {
-	case standard
-	case secure
-
-	var bridge: PactSwiftMockServer.TransferProtocol {
-		switch self {
-		case .standard: return .standard
-		case .secure: return .secure
-		}
-	}
 }
 
 #else
-// Still ridiculous! This works when building on macOS pre 11.
-
-import PactSwiftMockServer
 
 /// Defines the transfer protocol on which `MockService` runs.
 @objc public enum TransferProtocol: Int {
 	case standard
 	case secure
-
-	var bridge: PactSwiftMockServer.TransferProtocol {
-		switch self {
-		case .standard: return .standard
-		case .secure: return .secure
-		}
-	}
 }
 
 #endif
 
 extension TransferProtocol {
+
+	public init?(string: String?) {
+		guard let string = string else { return nil }
+		switch string {
+		case "http": self = .standard
+		case "https": self = .secure
+		default: return nil
+		}
+	}
+
+	/// Bridges to `TransferProtocol` type in `PactSwiftMockServer` package
+	var bridge: PactSwiftMockServer.TransferProtocol {
+		switch self {
+		case .standard: return .standard
+		case .secure: return .secure
+		}
+	}
 
 	/// HTTP Transfer protocol
 	var `protocol`: String {
