@@ -19,7 +19,8 @@ let package = Package(
 	],
 
 	dependencies: [
-		.package(url: "https://github.com/surpher/PactSwiftMockServer.git", .exact("0.4.3"))
+//		.package(url: "https://github.com/surpher/PactSwiftMockServer.git", .exact("0.4.3"))
+		.package(url: "https://github.com/surpher/PactSwiftMockServer.git", .branch("feature/95_custom_header_for_verification"))
 	],
 
 	targets: [
