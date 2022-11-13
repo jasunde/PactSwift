@@ -225,14 +225,13 @@ public final class ProviderVerifier {
 	///
 	/// - Returns: A `Result<Bool, VerificationError>` where error describes the failure
 	///
-	public func verify(file: FileString? = #file, line: UInt? = #line, completion: (() -> Void)? = nil) -> Result<Bool, ProviderVerifier.VerificationError> {
+	public func verify(file: FileString? = #file, line: UInt? = #line) -> Result<Bool, ProviderVerifier.VerificationError> {
 		switch verifier.verify() {
 		case let .success(result):
-			completion?()
 			return .success(result)
+
 		case let .failure(error):
 			failWith(error.description, file: file, line: line)
-			completion?()
 			return .failure(VerificationError.error(error.description))
 		}
 	}
