@@ -20,7 +20,7 @@ import Foundation
 public extension ProviderVerifier {
 
 	// A bridge to PactSwiftMockServer provider verification errors
-	enum VerificationError: Error {
+	enum VerificationError: Error, Equatable {
 		case error(String)
 	}
 
