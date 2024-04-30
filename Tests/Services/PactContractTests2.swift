@@ -7,6 +7,7 @@
 
 import XCTest
 @testable import PactSwift
+import InlineSnapshotTesting
 
 final class PactContractTests2: XCTestCase {
   var pact: Pact!
@@ -53,9 +54,60 @@ final class PactContractTests2: XCTestCase {
     
     try pact.writePactFile()
     
-    let interactions = try getInteractions()
+    let firstInteraction = try XCTUnwrap(getInteractions().first as? [String: Any])
     
-    XCTAssertEqual(1, interactions.count)
+    let response = try XCTUnwrap(firstInteraction["response"] as? [String: Any])
+
+    assertInlineSnapshot(of: response, as: .json) {
+      #"""
+      {
+        "body" : {
+          "content" : [
+            {
+              "id" : 1,
+              "name" : "Test Object"
+            }
+          ],
+          "contentType" : "application\/json",
+          "encoded" : false
+        },
+        "headers" : {
+          "Content-Type" : [
+            "application\/json"
+          ]
+        },
+        "matchingRules" : {
+          "body" : {
+            "$" : {
+              "combine" : "AND",
+              "matchers" : [
+                {
+                  "match" : "type"
+                }
+              ]
+            },
+            "$[*].id" : {
+              "combine" : "AND",
+              "matchers" : [
+                {
+                  "match" : "integer"
+                }
+              ]
+            },
+            "$[*].name" : {
+              "combine" : "AND",
+              "matchers" : [
+                {
+                  "match" : "type"
+                }
+              ]
+            }
+          }
+        },
+        "status" : 200
+      }
+      """#
+    }
   }
   
   func test_object2() async throws {
