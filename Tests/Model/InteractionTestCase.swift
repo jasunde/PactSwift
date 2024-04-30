@@ -24,7 +24,7 @@ class InteractionTestCase: XCTestCase {
 	var builder: PactBuilder!
 
 	private var pactDirectory: String {
-		ProcessInfo.processInfo.environment["PACT_OUTPUT_DIR"]!
+		ProcessInfo.processInfo.environment["PACT_OUTPUT_DIR"] ?? "/tmp/pacts"
 	}
 
 	@MainActor
