@@ -513,8 +513,10 @@ final class PactContractTests: XCTestCase {
 private extension PactContractTests {
   static func getJsonObject(_ filename: String) throws -> [String: Any] {
     let fileContents = try String(contentsOfFile: filename)
-    guard let data = fileContents.data(using: .utf8),
-          let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+    guard
+      let data = fileContents.data(using: .utf8),
+      let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+    else {
       return [:]
     }
     return jsonObject
