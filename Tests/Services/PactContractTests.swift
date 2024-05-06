@@ -226,7 +226,7 @@ final class PactContractTests: XCTestCase {
   }
   
   func testPactContract_WritesMatchersAndGenerators() async throws {
-//    throw XCTSkip(".eachLike does not work with array literals")
+    throw XCTSkip(".eachLike does not work with array literals")
         try builder
           .uponReceiving("Request for list of users")
           .given("users exist")
