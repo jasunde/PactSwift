@@ -112,7 +112,7 @@ final class PactContractTests: XCTestCase {
     assertExistence(of: expectedMatchers, in: interaction)
   }
   
-  private static var animalsWithChildrenDescription = "a request for animals with children"
+  private static let animalsWithChildrenDescription = "a request for animals with children"
   func testExample_AnimalsWithChildren() async throws {
     try builder
       .uponReceiving(Self.animalsWithChildrenDescription)
